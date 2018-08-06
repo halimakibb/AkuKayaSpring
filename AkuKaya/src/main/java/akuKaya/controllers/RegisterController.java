@@ -1,6 +1,8 @@
 package main.java.akuKaya.controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import main.java.akuKaya.forms.RegisterForm;
 import main.java.akuKaya.models.ReturnMessage;
 import main.java.akuKaya.models.ReturnMessage.MessageType;
+import main.java.akuKaya.models.Role;
 import main.java.akuKaya.models.User;
 import main.java.akuKaya.models.UserDetail;
 import main.java.akuKaya.services.interfaces.RegisterService;
@@ -63,16 +66,21 @@ public class RegisterController {
 		String password = BCrypt.hashpw(registerForm.getPassword(), BCrypt.gensalt());
 		User newUser = new User(username, password, true, username, new Date(), username, new Date(), userDetail);
 		
+		// add roles, can only register as User right now
+		List<Integer> roleIds = new ArrayList<>();
+		roleIds.add(2);
+		
 		try {
 			ReturnMessage returnMessage = registerService.authenticateUser(newUser);
 			if (returnMessage.getMessageType().equals(MessageType.Success)) {
 				try {
+					List<Role> roles = registerService.getRoles(roleIds);
+					newUser.setRoles(roles);
 					registerService.create(newUser);
 					return "redirect:/";
 				}
 				catch (Exception ex) {
-					System.out.println(ex.getMessage());
-					return "redirect:/users/register";
+					return "redirect:/users/register?errorMsg=" + ex.getMessage();
 				}
 			}
 			else {
@@ -80,8 +88,7 @@ public class RegisterController {
 			}
 		}
 		catch (Exception ex) {
-			System.out.println(ex.getMessage());
-			return "redirect:/users/register";
+			return "redirect:/users/register?errorMsg=" + ex.getMessage();
 		}
 		
 	}

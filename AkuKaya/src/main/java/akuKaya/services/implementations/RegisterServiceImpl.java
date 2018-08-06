@@ -1,13 +1,17 @@
 package main.java.akuKaya.services.implementations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import main.java.akuKaya.dao.interfaces.UserDAO;
 import main.java.akuKaya.dao.interfaces.RegisterDAO;
+import main.java.akuKaya.dao.interfaces.UserDAO;
 import main.java.akuKaya.models.ReturnMessage;
 import main.java.akuKaya.models.ReturnMessage.MessageType;
+import main.java.akuKaya.models.Role;
 import main.java.akuKaya.models.User;
 import main.java.akuKaya.services.interfaces.RegisterService;
 
@@ -46,6 +50,16 @@ public class RegisterServiceImpl implements RegisterService {
 		ReturnMessage returnMessage = new ReturnMessage(MessageType.Success, "User valid");
 		return returnMessage;
 
+	}
+
+	@Override
+	@Transactional
+	public List<Role> getRoles(List<Integer> roleIds) {
+		List<Role> roles = new ArrayList<Role>();
+		for (Integer roleId : roleIds){
+			roles.add(registerDAO.getRole(roleId));
+		}
+		return roles;
 	}
 
 }
