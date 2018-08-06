@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="layout :: site-head">
+<meta charset="UTF-8" />
+<title>Spring MVC Blog</title>
+</head>
+
+<body class="is-preload">
+
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+				<header th:replace="layout :: site-header"> </header>
+				<section>
+					<header class="main">
+						<div class="row">
+							<h1>Transaction List</h1>
+
+						</div>
+
+					</header>
+					<div class="row">
+						<div class="col-md-12">
+							<h2>Filter</h2>
+						</div>
+					</div>
+					<div class="filter">
+						<form method="get" th:object="${transactionFilterForm}">
+
+							<div class="row">
+								<div class="col-md-2">
+									<input type="radio" id="daily" value="1" name="timeFilter">
+									<label for="daily">Daily</label>
+								</div>
+								<div class="col-md-2">
+									<input type="radio" id="weekly" value="2" name="timeFilter">
+									<label for="weekly">Weekly</label>
+								</div>
+								<div class="col-md-2">
+									<input type="radio" id="monthly" value="3" name="timeFilter">
+									<label for="monthly">Monthly</label>
+								</div>
+								<div class="col-md-2">
+									<input type="radio" id="yearly" value="4" name="timeFilter">
+									<label for="yearly">Yearly</label>
+								</div>
+								<div class="col-md-4"></div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-2" id="dailyFilterRow">
+									<input id="dailyFilter" type="date" name="dailyFilter" />
+								</div>
+								<div class="col-md-4" id="monthlyFilterRow">
+									<div class="col-md-6">
+										<select id="monthlyFilterMonth" name="monthlyFilterMonth">
+											<option th:each="month : ${#numbers.sequence(1, 12)}"
+												th:value="${month}" th:text="${month}"
+												th:selected="${month == 1}"></option>
+										</select>
+									</div>
+									<div class="col-md-6">
+										<select id="monthlyFilterYear" name="monthlyFilterYear">
+											<option
+												th:each="year : ${#numbers.sequence(#dates.year(#dates.createNow()) - 10, #dates.year(#dates.createNow()))}"
+												th:value="${year}" th:text="${year}"
+												th:selected="${year == #dates.year(#dates.createNow())}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-2" id="yearlyFilterRow">
+									<select id="yearFilter" name="yearFilter">
+										<option
+											th:each="year : ${#numbers.sequence(#dates.year(#dates.createNow()) - 10, #dates.year(#dates.createNow()))}"
+											th:value="${year}" th:text="${year}"
+											th:selected="${year == #dates.year(#dates.createNow())}"></option>
+									</select>
+								</div>
+								
+								<input type="hidden" name="page" value="1" />
+							</div>
+							<div class="row" id="searchTransaction">
+								<input type="submit" value="Search Transaction"
+									style="margin: 15px" />
+							</div>
+						</form>
+					</div>
+					<div class="row">
+					<br>
+					</div>
+					<a href="/transaction/insert" th:href="@{/transaction/insert}"
+						class="button primary small">Insert Transaction</a> <br> <br>
+					<table>
+						<tbody>
+							<tr>
+								<th>Description</th>
+								<th>Transaction Type</th>
+								<th>Transaction Date</th>
+								<th>Amount</th>
+								<th>Action</th>
+							</tr>
+
+							<tr th:each="transaction: ${transactionPage.Content}"
+								th:class="${transaction.transactionType eq 1} ? greenrow">
+								<td th:text="${transaction.description}">Description</td>
+
+								<td th:switch="${transaction.transactionType}"><span
+									th:case="'1'">CREDIT</span> <span th:case="'2'">DEBIT</span></td>
+								<td
+									th:text="${#dates.format(transaction.transactionDate, 'MM/dd/yyyy')}">Feb/12/2018</td>
+								<td
+									th:text="'Rp'+${#numbers.formatDecimal(transaction.amount, 1, 'POINT', 2, 'COMMA')}">350</td>
+								<td><a href="/transaction/update"
+									th:href="@{/transaction/update?transactionID=} + ${transaction.transactionID}"
+									class="button primary small">Update</a> <a
+									href="/transaction/delete"
+									onclick="return confirm('Are you sure you want to delete this item?');"
+									th:href="@{/transaction/delete?transactionID=} + ${transaction.transactionID}"
+									class="button small">Delete</a></td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<p class="text-center">TOTAL</p>
+								</td>
+								<td
+									th:text="'Rp'+${#numbers.formatDecimal(formMessage.message, 1, 'POINT', 2, 'COMMA')}">
+
+								</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+					<ul class="pagination">
+						<li th:each="pageNumber : ${pageNumbers}"><a
+							th:href="@{/transaction/(size=${transactionPage.size}, 
+								page=${pageNumber}, 
+								timeFilter=${timeFilter}, 
+								dailyFilter=${dailyFilter}, 
+								monthlyFilterMonth=${monthlyFilterMonth}, 
+								monthlyFilterYear=${monthlyFilterYear}, 
+								yearFilter=${yearFilter})}"
+							th:text=${pageNumber}
+							th:class="page"
+							th:classappend="${pageNumber==transactionPage.number + 1} ? active"></a></li>
+					</ul>
+
+				</section>
+			</div>
+
+		</div>
+
+	</div>
+	<footer th:replace="layout :: site-footer"> </footer>
+</body>
+
+
+</html>
+

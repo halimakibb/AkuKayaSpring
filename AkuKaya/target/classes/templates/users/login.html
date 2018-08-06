@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+<meta charset="UTF-8" />
+<title>Spring MVC Blog</title>
+</head>
+
+<body class="is-preload">
+
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+				<header th:replace="layout :: site-header"> </header>
+				<section>
+					<header class="main">
+						<div class="row">
+							<div class="col-md-4"></div>
+							<div class="col-md-4">
+								<h1 class="text-center">Login</h1>
+							</div>
+							<div class="col-md-4"></div>
+						</div>
+					</header>
+					<div id="errors" th:if="${param.error != null}">Invalid Login
+					</div>
+
+					<div id="logout" th:if="${param.logout != null}">You've
+						successfully logged out</div>
+
+					<form method="post" action="/users/authenticate"
+						th:action="@{/users/authenticate}" th:object="${loginForm}">
+						<input type="hidden" th:name="${_csrf.parameterName}"
+							th:value="${_csrf.token}" />
+						<div>
+							<label for="username">Username:</label>
+						</div>
+						<input id="username" type="text" name="username"
+							th:value="*{username}" /> <span class="formError"
+							th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Invalid
+							username</span>
+
+						<div>
+							<label for="password" th:value="*{username}">Password:</label>
+						</div>
+
+						<input id="password" type="password" name="password"
+							th:value="*{password}" /> <span class="formError"
+							th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Invalid
+							password</span>
+
+						<div class="row">
+							<div class="col-md-4">
+								<input type="checkbox" id="remember-me" name="remember-me">
+								<label for="remember-me">Remember Me</label>
+							</div>
+
+						</div>
+						<div>
+							<input type="submit" value="Login" />
+						</div>
+					</form>
+
+				</section>
+			</div>
+
+		</div>
+
+	</div>
+</body>
+
+
+</html>
+

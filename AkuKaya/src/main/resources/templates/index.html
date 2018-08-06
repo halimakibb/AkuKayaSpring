@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="layout :: site-head">
+<meta charset="UTF-8" />
+<title>Spring MVC Blog</title>
+</head>
+
+<body class="is-preload">
+
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+				<header th:replace="layout :: site-header"> </header>
+				<section>
+					<header class="main">
+					<div class="row">
+						<div class="col-md-4"></div>
+						<div class="col-md-4">
+							<h1 class="text-center">Login/Register</h1>
+						</div>
+						<div class="col-md-4"></div>
+					</div>
+						
+					</header>
+
+					<div class="row">
+						<div class="col-md-4"></div>
+						<div class="col-md-4">
+							<ul class="actions fit">
+								<li><a href="/users/login" th:href="@{/users/login}" class="button primary fit">Login</a></li>
+								<li><a href="/users/register" th:href="@{/users/register}" class="button fit">Register</a></li>
+							</ul>
+						</div>
+						<div class="col-md-4"></div>
+					</div>
+					
+				</section>
+			</div>
+			
+		</div>
+
+	</div>
+</body>
+
+
+</html>
+

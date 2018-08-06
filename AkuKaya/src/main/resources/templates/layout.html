@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:fragment="site-head">
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="../public/static/css/main.css"
+	th:href="@{/static/css/main.css}" />
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" />
+</head>
+<body class="is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+
+				<!-- Header -->
+				<header id="header" th:fragment="site-header">
+					<a href="/" th:href="@{/}" class="logo"><strong>AkuKaya</strong>
+						by habibmalik </a>
+					<ul class="icons" sec:authorize="isAuthenticated()">
+						<li><span th:text="'Hello, '+ ${#authentication.name} + '!'">Hello!</span></li>
+						<li>
+							<form name="logoutForm" th:action="@{/logout}" method="post">
+								<input type="submit" class="button primary small"
+									value="Sign Out" />
+							</form>
+						</li>
+
+					</ul>
+
+					<!-- <ul class="icons" th:remove="${session.username eq null}? none : all">
+						<li><a href="/users/login" th:href="@{/users/login}">Login</a></li>
+						<li><a href="/users/register" th:href="@{/users/register}">Register</a></li>				
+					</ul>
+					<ul class="icons" th:remove="${session.username eq null}? all : none">
+						<li><span th:text="'Hello, '+ ${session.username}">Hello!</span></li>
+						<li><a href="/users/logout" th:href="@{/users/logout}">Logout</a></li>
+						
+					</ul> -->
+
+				</header>
+
+				<!-- Content -->
+
+
+			</div>
+		</div>
+
+		<!-- Sidebar -->
+		<div id="sidebar" th:fragment="site-sidebar">
+			<div class="inner">
+
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Menu</h2>
+					</header>
+					<ul>
+						<li><a href="index.html"
+							th:remove="${session.username eq null}? all : none">Login</a></li>
+						<li><a href="index.html"
+							th:remove="${session.username eq null}? all : none">Register</a></li>
+						<li><a href="index.html"
+							th:remove="${session.username eq null}? none : all">Transaction
+								List</a></li>
+						<li><a href="index.html"
+							th:remove="${session.username eq null}? none : all">Logout</a></li>
+
+					</ul>
+				</nav>
+
+
+
+				<!-- Section -->
+				<section>
+					<header class="major">
+						<h2>Get in touch</h2>
+					</header>
+					<p>Hey hey hey... Hey Hey Hey... Waso waso waso waso waso
+						wassapppp Bitconnect! Whoo! Bitconnect!</p>
+					<ul class="contact">
+						<li class="fa-envelope-o"><a href="#">carlos@matos.bcc</a></li>
+						<li class="fa-phone">+6221 5795 8145</li>
+						<li class="fa-home">1 Yonge Street, Suite 1801 Toronto ON,
+							M5E 1W7<br /> Suite 1801 Toronto ON, M5E 1W7
+						</li>
+					</ul>
+				</section>
+
+				<!-- Footer -->
+
+
+			</div>
+		</div>
+
+	</div>
+	<footer id="footer" th:fragment="site-footer">
+		<p class="copyright">
+			&copy; Untitled. All rights reserved. Demo Images: <a
+				href="https://unsplash.com">Unsplash</a>. Design: <a
+				href="https://html5up.net">HTML5 UP</a>.
+		</p>
+		<script src="../public/static/js/jquery.min.js"
+			th:src="@{/static/js/jquery.min.js}"></script>
+		<script src="../public/static/js/browser.min.js"
+			th:src="@{/static/js/browser.min.js}"></script>
+		<script src="../public/static/js/breakpoints.min.js"
+			th:src="@{/static/js/breakpoints.min.js}"></script>
+		<script src="../public/static/js/util.js"
+			th:src="@{/static/js/util.js}"></script>
+		<script src="../public/static/main.js" th:src="@{/static/js/main.js}"></script>
+	</footer>
+</body>
+</html>

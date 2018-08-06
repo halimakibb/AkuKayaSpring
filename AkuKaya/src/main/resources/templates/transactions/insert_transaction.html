@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+<meta charset="UTF-8" />
+<title>Spring MVC Blog</title>
+</head>
+
+<body class="is-preload">
+
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+				<header th:replace="layout :: site-header"> </header>
+				<section>
+					<header class="main">
+						<div class="row">
+							<h1>Insert Transaction</h1>
+						</div>
+
+					</header>
+
+					<form method="post" th:object="${transactionForm}">
+						<input type="hidden" th:name="${_csrf.parameterName}"
+							th:value="${_csrf.token}" />
+						<input type="hidden" th:value="${transaction.transactionID}" name="transactionID" />
+						<div>
+							<label for="description">Description:</label>
+						</div>
+						<input id="description" type="text" name="description"
+							th:value="${transaction.description}" /> <span class="formError"
+							th:if="${#fields.hasErrors('description')}"
+							th:errors="*{description}">Invalid description</span>
+
+						<div>
+							<label for="amount" th:value="*{amount}">Amount:</label>
+						</div>
+
+						<input id="amount" type="number" placeholder="0.00" step="0.01"
+							name="amount" th:value="${transaction.amount}"/> <span class="formError"
+							th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Invalid
+							amount</span>
+
+						<div>
+							<label for="transactionType">Transaction Type:</label>
+						</div>
+						<select id="transactionType" name="transactionType">
+							<option th:selected="${1 == transaction.transactionType}" value="1">Credit</option>
+							<option th:selected="${2 == transaction.transactionType}" value="2">Debit</option>
+						</select>
+
+						<div>
+							<label for="transactionDate">Transaction Date:</label>
+						</div>
+						<input id="transactionDate" type="date" name="transactionDate" th:value="${#dates.format(transaction.transactionDate, 'yyyy-MM-dd')}"/>
+						<span class="formError"
+							th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Invalid
+							Date</span>
+
+						<div class="row"></div>
+						<div>
+							<input type="submit" value="Save Transaction" />
+						</div>
+					</form>
+
+
+				</section>
+			</div>
+
+		</div>
+
+	</div>
+	<footer th:replace="layout :: site-footer">
+	</footer>
+</body>
+
+
+</html>
+
